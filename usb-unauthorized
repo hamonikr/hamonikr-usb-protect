@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -x
+xhost local:root
+export DISPLAY=:0.0
+
+sudo su - root -c 'zenity --error --width=300 --height=100 --text "관리자에 의해서 이 USB  장치는 사용이 금지되었습니다.
+
+허용된 USB 만 사용 가능합니다.
+
+[Warninig] USB Not Allowed by ADMIN
+
+"'

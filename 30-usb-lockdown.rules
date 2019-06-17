@@ -1,0 +1,19 @@
+# block all USB
+ACTION=="add", SUBSYSTEMS=="usb", RUN+="/bin/sh -c 'for host in /sys/bus/usb/devices/usb*; do echo 0 > $host/authorized_default; done'"
+
+# Enable hub devices
+ACTION=="add", ATTR{bDeviceClass}=="09", RUN+="/bin/sh -c 'echo 1 >/sys$DEVPATH/authorized'"
+
+# only specific USB ALLOW - this case is my pc's usb mouse
+ACTION=="add", ATTR{idVendor}=="046d", ATTR{idProduct}=="c077", RUN="/bin/sh -c 'echo 1 >/sys/\$devpath/authorized'"
+
+# Authorized USB only ALLOW - this case is HamoniKR USB 
+ACTION=="add", ATTR{idVendor}=="0781", ATTR{idProduct}=="5567", RUN="/bin/sh -c 'echo 1 >/sys/\$devpath/authorized'"
+
+# Authorized USB only ALLOW - Intel vPro Keyboard
+ACTION=="add", ATTR{idVendor}=="8087", ATTR{idProduct}=="002c", RUN="/bin/sh -c 'echo 1 >/sys/\$devpath/authorized'"
+
+# unAuthorized USB Block with Message
+ACTION=="add", ATTR{idVendor}=="0781", ATTR{idProduct}=="556b", RUN="/usr/local/bin/usb-unauthorized"
+ACTION=="add", ATTR{idVendor}=="0781", ATTR{idProduct}=="5581", RUN="/usr/local/bin/usb-unauthorized"
+ACTION=="add", ATTR{idVendor}=="090c", ATTR{idProduct}=="1000", RUN="/usr/local/bin/usb-unauthorized"
