@@ -1,13 +1,32 @@
 #!/bin/bash
 
-set -x
-xhost local:root
-export DISPLAY=:0.0
+LOGFILE="/tmp/usb-lockdown.log"
+install -m 666 $LOGFILE
 
-sudo su - root -c 'zenity --error --width=300 --height=100 --text "관리자에 의해서 이 USB  장치는 사용이 금지되었습니다.
+# last line account uid is guest session random id
+USERID=`cat /etc/passwd | cut -d: -f1 | tail -n1`
 
-허용된 USB 만 사용 가능합니다.
+echo "`date '+%Y-%m-%d %H:%M:%S'` user id : $USERID" >> $LOGFILE
+echo "`date '+%Y-%m-%d %H:%M:%S'` USB blocked. Device Info : $1" >> $LOGFILE
 
-[Warninig] USB Not Allowed by ADMIN
-
-"'
+if [ grep -q 'guest' $USERID ]
+then
+        echo "Found Guest User Id : $USERID" >> $LOGFILE
+	exec /tmp/$USERID/.usb-block &>> $LOGFILE
+	set -x &> $LOGFILE
+	#xhost local:root  &>> $LOGFILE
+	export DISPLAY=:0.0  &>> $LOGFILE
+	sudo su - $USERID -c 'zenity --error --width=300 --height=100 --text "관리자에 의해서 이 USB  장치는 사용이 금지되었습니다.\n\n
+	허용된 USB 만 사용 가능합니다.\n\n
+	[Warninig] USB Not Allowed by ADMIN"' &>> $LOGFILE
+        exit 1
+else
+	set -x &> $LOGFILE
+	#xhost local:root  &>> $LOGFILE
+	export DISPLAY=:0.0  &>> $LOGFILE
+	sudo su - $USERID -c 'zenity --error --width=300 --height=100 --text "관리자에 의해서 이 USB  장치는 사용이 금지되었습니다.\n\n
+	허용된 USB 만 사용 가능합니다.\n\n
+	[Warninig] USB Not Allowed by ADMIN"' &>> $LOGFILE
+	#notify-send -u critical "관리자에 의해서 이 USB  장치는 사용이 금지되었습니다"
+fi
+exit 0
