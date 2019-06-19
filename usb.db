@@ -1,0 +1,29 @@
+# Trust Devices
+
+# DONT REMOVE !!! - Intel vPro Keyboard
+ATTR{idVendor}=="8087", ATTR{idProduct}=="002c"
+
+
+# 장치를 부착한 상태에서 lsusb 로 해당 장치의 제조사 고유번호와 제품 고유번호를 확인할 수 있음
+
+# only specific USB ALLOW - this case is my pc's usb mouse
+ATTR{idVendor}=="046d", ATTR{idProduct}=="c077"
+# Authorized USB only ALLOW - this case is HamoniKR USB 
+ATTR{idVendor}=="0781", ATTR{idProduct}=="5567"
+
+
+# unAuthorized USB Devices
+ATTR{idVendor}=="0781", ATTR{idProduct}=="556b"
+ATTR{idVendor}=="0781", ATTR{idProduct}=="5581"
+ATTR{idVendor}=="090c", ATTR{idProduct}=="1000"
+
+
+ID 8087:8001 Intel Corp. 
+ID 1d6b:0002 Linux Foundation 2.0 root hub
+ID 05e3:0747 Genesys Logic, Inc. 
+ID 0781:5583 SanDisk Corp. 
+ID 1d6b:0003 Linux Foundation 3.0 root hub
+ID 2232:1072 Silicon Motion 
+ID 0cf3:e300 Atheros Communications, Inc. 
+ID 1d6b:0002 Linux Foundation 2.0 root hub
+
