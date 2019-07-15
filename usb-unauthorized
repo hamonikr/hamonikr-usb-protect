@@ -1,7 +1,6 @@
 #!/bin/bash
 
 LOGFILE="/tmp/usb-lockdown.log"
-install -m 666 $LOGFILE
 
 # last line account uid is guest session random id
 USERID=`cat /etc/passwd | cut -d: -f1 | tail -n1`
