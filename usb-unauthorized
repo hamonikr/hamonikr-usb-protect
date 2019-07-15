@@ -3,7 +3,7 @@
 LOGFILE="/tmp/usb-lockdown.log"
 
 # last line account uid is guest session random id
-USERID=`cat /etc/passwd | cut -d: -f1 | tail -n1`
+USERID=`cat /etc/passwd | grep "/bin/bash" | cut -d: -f1 | tail -n1`
 
 echo "`date '+%Y-%m-%d %H:%M:%S'` user id : $USERID" >> $LOGFILE
 echo "`date '+%Y-%m-%d %H:%M:%S'` USB blocked. Device Info : $1" >> $LOGFILE
