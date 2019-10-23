@@ -1,12 +1,25 @@
+# USB 장치의 유형을 식별하는 코드는 아래 링크 참고
+# https://usb.org/defined-class-codes
+
+
 # block all USB
 #ACTION=="add", SUBSYSTEMS=="usb", RUN+="/bin/sh -c 'for host in /sys/bus/usb/devices/usb*; do echo 0 > $host/authorized_default; done'"
+
+# Mass Storage 유형의 장치만 모두 작동되지 않도록 블럭
+ACTION=="add", SUBSYSTEMS=="usb", RUN+="/bin/sh -c 'for host in /sys/bus/usb/devices/usb*; do echo 1 > $host/authorized_default; done'"
+ACTION=="add", ATTR{bInterfaceClass}=="08", RUN+="/bin/sh -c 'for host in /sys/bus/usb/devices/usb*; do echo 0 > $host/authorized_default; done'"
+ACTION=="remove", ATTR{bInterfaceClass}=="08", RUN+="/bin/sh -c 'for host in /sys/bus/usb/devices/usb*; do echo 0 > $host/authorized_default; done'"
+
+# 모든 허가되지 않은 USB에 대해서 차단 메세지 보이기
+ACTION=="add", ATTR{bInterfaceClass}=="08", RUN+="/bin/sh -c '/usr/local/bin/usb-unauthorized'"
 
 # DONT REMOVE !!! - Intel vPro Keyboard
 ACTION=="add", ATTR{idVendor}=="8087", ATTR{idProduct}=="002c", RUN="/bin/sh -c 'echo 1 >/sys/\$devpath/authorized'"
 
 # Enable hub devices
+ACTION=="add", ATTR{bDeviceClass}=="03", RUN+="/bin/sh -c 'echo 1 >/sys$DEVPATH/authorized'"
+ACTION=="add", ATTR{bDeviceClass}=="07", RUN+="/bin/sh -c 'echo 1 >/sys$DEVPATH/authorized'"
 ACTION=="add", ATTR{bDeviceClass}=="09", RUN+="/bin/sh -c 'echo 1 >/sys$DEVPATH/authorized'"
-
 
 # only specific USB ALLOW - this case is my pc's usb mouse
 ACTION=="add", ATTR{idVendor}=="046d", ATTR{idProduct}=="c077", RUN="/bin/sh -c 'echo 1 >/sys/\$devpath/authorized'"
@@ -25,11 +38,10 @@ ACTION=="add", ATTR{idVendor}=="2232", ATTR{idProduct}=="1072", RUN="/bin/sh -c 
 ACTION=="add", ATTR{idVendor}=="0cf3", ATTR{idProduct}=="e300", RUN="/bin/sh -c 'echo 1 >/sys/\$devpath/authorized'"
 ACTION=="add", ATTR{idVendor}=="1d6b", ATTR{idProduct}=="0002", RUN="/bin/sh -c 'echo 1 >/sys/\$devpath/authorized'"
 
+
 # unAuthorized USB Block with Message
 #ACTION=="add", ATTR{idVendor}=="0781", ATTR{idProduct}=="556b", RUN="/usr/local/bin/usb-unauthorized Vendor:0781,Product:556b"
 #ACTION=="add", ATTR{idVendor}=="0781", ATTR{idProduct}=="5581", RUN="/usr/local/bin/usb-unauthorized Vendor:0781,Product:5581"
 #ACTION=="add", ATTR{idVendor}=="090c", ATTR{idProduct}=="1000", RUN="/usr/local/bin/usb-unauthorized Vendor:090c,Product:1000"
 
-# sandisk hckim's persional USB
-#ACTION=="add", ATTR{idVendor}=="0781", ATTR{idProduct}=="5590", RUN="/usr/local/bin/usb-unauthorized Vendor:0781,Product:5590"
 
