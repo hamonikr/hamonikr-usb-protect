@@ -18,7 +18,7 @@ then
 	sudo su - $USERID -c 'zenity --error --width=300 --height=100 --text "관리자에 의해서 이 USB  장치는 사용이 금지되었습니다.\n\n
 	허용된 USB 만 사용 가능합니다.\n\n
 	[Warninig] USB Not Allowed by ADMIN"' &>> $LOGFILE
-        exit 1
+    exit 1
 else
 	set -x &> $LOGFILE
 	#xhost local:root  &>> $LOGFILE
